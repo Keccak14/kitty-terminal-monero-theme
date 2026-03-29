@@ -1,0 +1,2 @@
+# Launch a window, display Monero-themed ASCII art via script, then start the shell
+launch sh -c "$HOME/.config/kitty/monero_art.sh && exec $SHELL -i"

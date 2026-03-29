@@ -1,0 +1,104 @@
+# 🟠 Kitty Terminal — Monero Theme
+
+A custom [kitty](https://sw.kovidgoyal.net/kitty/) terminal theme built around the Monero aesthetic — deep black background, vivid Monero orange (`#ff6600`), and a Matrix-style ASCII rain animation that resolves into the Monero logo every time you open a new terminal.
+
+---
+
+## ✨ Features
+
+- **Startup animation** — orange character rain cascades down and locks into the Monero ASCII logo, followed by a flash-pulse settle effect
+- **Monero color palette** — `#ff6600` orange on pure black, used for cursor, borders, tabs, and foreground
+- **Watermark logo** — the Monero logo sits quietly in the bottom-right corner of every window
+- **3270 Nerd Font Mono** — retro monospace with full Nerd Font glyph support
+- **Powerline tab bar** — styled in Monero orange and dark grey
+- **Slight background opacity** — `0.95` transparency for a subtle desktop bleed-through
+
+---
+
+## 📋 Requirements
+
+| Requirement | Notes |
+|---|---|
+| [kitty](https://sw.kovidgoyal.net/kitty/) | Any recent version |
+| `python3` | Used by the startup animation |
+| [3270 Nerd Font Mono](https://www.nerdfonts.com/font-downloads) | Search "3270" on nerdfonts.com |
+
+---
+
+## 🚀 Installation
+
+```bash
+git clone https://github.com/Keccak14/kitty-terminal-monero-theme.git
+cd kitty-terminal-monero-theme
+chmod +x install.sh
+./install.sh
+```
+
+Then **restart kitty**. The animation plays automatically on every launch.
+
+> **Note:** If you have an existing `kitty.conf`, the installer backs it up as `kitty.conf.bak.<timestamp>` before overwriting.
+
+---
+
+## 📁 File Overview
+
+```
+kitty-terminal-monero-theme/
+├── install.sh              # One-command installer
+├── kitty.conf              # Full kitty config with Monero theme
+├── startup.session         # Kitty session: runs animation then drops to shell
+├── monero_art.sh           # Bash/Python ASCII rain animation
+└── padded-Monero-Logo.png  # Window watermark logo
+```
+
+---
+
+## 🎨 Color Palette
+
+| Role | Hex |
+|---|---|
+| Background | `#000000` |
+| Foreground / Cursor | `#ff6600` |
+| Active border / tab | `#ff6600` |
+| Inactive border / tab | `#4C4C4C` |
+
+---
+
+## 🔧 Manual Installation
+
+If you prefer not to use the installer, copy the files manually:
+
+```bash
+KITTY_CFG="$HOME/.config/kitty"
+mkdir -p "$KITTY_CFG"
+
+cp kitty.conf startup.session monero_art.sh padded-Monero-Logo.png "$KITTY_CFG/"
+chmod +x "$KITTY_CFG/monero_art.sh"
+
+# Fix the logo path in kitty.conf
+sed -i "s|KITTY_CONFIG_DIR|$KITTY_CFG|g" "$KITTY_CFG/kitty.conf"
+```
+
+---
+
+## 🎬 How the Animation Works
+
+`monero_art.sh` is a self-contained Bash/Python script with three phases:
+
+1. **Rain phase** — randomized orange characters fall in columns across the full terminal height (55 ticks)
+2. **Resolve phase** — columns lock into place column-by-column, revealing the Monero ASCII art underneath
+3. **Pulse phase** — the logo flashes between warm white and orange 3 times before settling into the final orange render
+
+After the animation completes, your interactive shell starts normally.
+
+---
+
+## 🪙 About Monero
+
+[Monero (XMR)](https://getmonero.org) is a private, decentralized cryptocurrency. This theme is a fan project and is not affiliated with the Monero project.
+
+---
+
+## 📄 License
+
+MIT — do whatever you want with it.
