@@ -74,7 +74,6 @@ ok "monero_art.sh installed (executable)"
 cp "$REPO_DIR/padded-Monero-Logo.png" "$KITTY_CFG/padded-Monero-Logo.png"
 ok "padded-Monero-Logo.png installed"
 
-# ── Font notice ────────────────────────────────────────────────
 
 # ── Done ───────────────────────────────────────────────────────
 echo -e "\n${ORANGE}${BOLD}  ✔ All done! Restart kitty to see your theme.${RESET}\n"
