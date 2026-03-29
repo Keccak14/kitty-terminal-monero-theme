@@ -75,10 +75,6 @@ cp "$REPO_DIR/padded-Monero-Logo.png" "$KITTY_CFG/padded-Monero-Logo.png"
 ok "padded-Monero-Logo.png installed"
 
 # ── Font notice ────────────────────────────────────────────────
-header "Font requirement"
-echo -e "  This theme uses ${BOLD}3270 Nerd Font Mono${RESET}."
-echo -e "  Download it from: ${ORANGE}https://www.nerdfonts.com/font-downloads${RESET}"
-echo -e "  (Search for '3270' — install and set it in your system/kitty)"
 
 # ── Done ───────────────────────────────────────────────────────
 echo -e "\n${ORANGE}${BOLD}  ✔ All done! Restart kitty to see your theme.${RESET}\n"
