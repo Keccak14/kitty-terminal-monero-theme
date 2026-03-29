@@ -9,7 +9,6 @@ A custom [kitty](https://sw.kovidgoyal.net/kitty/) terminal theme built around t
 - **Startup animation** — orange character rain cascades down and locks into the Monero ASCII logo, followed by a flash-pulse settle effect
 - **Monero color palette** — `#ff6600` orange on pure black, used for cursor, borders, tabs, and foreground
 - **Watermark logo** — the Monero logo sits quietly in the bottom-right corner of every window
-- **3270 Nerd Font Mono** — retro monospace with full Nerd Font glyph support
 - **Powerline tab bar** — styled in Monero orange and dark grey
 - **Slight background opacity** — `0.95` transparency for a subtle desktop bleed-through
 
@@ -21,7 +20,6 @@ A custom [kitty](https://sw.kovidgoyal.net/kitty/) terminal theme built around t
 |---|---|
 | [kitty](https://sw.kovidgoyal.net/kitty/) | Any recent version |
 | `python3` | Used by the startup animation |
-| [3270 Nerd Font Mono](https://www.nerdfonts.com/font-downloads) | Search "3270" on nerdfonts.com |
 
 ---
 
