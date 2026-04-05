@@ -1,18 +1,17 @@
 # ─────────────────────────────────────────────────────────────
 #  Starship Prompt — Monero Theme
-#  Style: ~ > Downloads > ISO ❯
+#  Style: [orange bg, black text path] then grey ❯
 # ─────────────────────────────────────────────────────────────
 
-format = "$directory$git_branch$git_status$cmd_duration\n❯ "
+format = "$directory$git_branch$git_status$cmd_duration\n[❯](bold fg:#4C4C4C) "
 
 # ── Directory ─────────────────────────────────────────────────
 [directory]
-style = "bold fg:#ff6600"
-format = "[$path ]($style)"
+style = "bold bg:#ff6600 fg:#000000"
+format = "[ $path ]($style)"
 truncation_length = 5
 truncation_symbol = "…> "
 home_symbol = "~"
-use_logical_path = true
 
 [directory.substitutions]
 "/" = " > "
@@ -21,14 +20,14 @@ use_logical_path = true
 [git_branch]
 style = "fg:#4C4C4C"
 symbol = ""
-format = "[on $branch]($style)"
+format = "[ on $branch]($style)"
 
 # ── Git status ────────────────────────────────────────────────
 [git_status]
-style = "fg:#ff6600"
+style = "fg:#4C4C4C"
 format = '([$all_status$ahead_behind]($style))'
 
-# ── Character (the ❯ is in format above, disable this) ────────
+# ── Character ─────────────────────────────────────────────────
 [character]
 success_symbol = ""
 error_symbol = "[❯](bold red)"
@@ -37,7 +36,7 @@ vimcmd_symbol = ""
 # ── Command duration ──────────────────────────────────────────
 [cmd_duration]
 style = "fg:#4C4C4C"
-format = "[took $duration]($style)"
+format = " [took $duration]($style)"
 min_time = 2_000
 
 [time]
