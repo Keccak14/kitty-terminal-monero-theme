@@ -1,0 +1,59 @@
+# ─────────────────────────────────────────────────────────────
+#  Starship Prompt — Monero Theme
+#  Colors: #ff6600 orange, #4C4C4C grey, #000000 black
+# ─────────────────────────────────────────────────────────────
+
+format = """
+[█](fg:#ff6600)\
+[ $directory](bg:#ff6600 fg:#000000 bold)\
+[█](fg:#ff6600 bg:#4C4C4C)\
+[ $git_branch$git_status](bg:#4C4C4C fg:#ff6600)\
+[█ ](fg:#4C4C4C)\
+$all"""
+
+# ── Directory ─────────────────────────────────────────────────
+[directory]
+style = "bg:#ff6600 fg:#000000 bold"
+truncation_length = 4
+truncate_to_repo = true
+
+# ── Git branch ────────────────────────────────────────────────
+[git_branch]
+style = "bg:#4C4C4C fg:#ff6600"
+symbol = " "
+format = "[$symbol$branch]($style)"
+
+# ── Git status ────────────────────────────────────────────────
+[git_status]
+style = "bg:#4C4C4C fg:#ff6600"
+format = '([ $all_status$ahead_behind]($style))'
+
+# ── Character (prompt symbol) ─────────────────────────────────
+[character]
+success_symbol = "[❯](bold fg:#ff6600)"
+error_symbol   = "[❯](bold red)"
+
+# ── Command duration ──────────────────────────────────────────
+[cmd_duration]
+style = "fg:#4C4C4C"
+format = "[ $duration]($style)"
+min_time = 2_000
+
+# ── Python ────────────────────────────────────────────────────
+[python]
+style = "fg:#ff6600"
+format = '[ $version]($style)'
+
+# ── Node ──────────────────────────────────────────────────────
+[nodejs]
+style = "fg:#ff6600"
+format = '[ $version]($style)'
+
+# ── Rust ──────────────────────────────────────────────────────
+[rust]
+style = "fg:#ff6600"
+format = '[ $version]($style)'
+
+# ── Time ──────────────────────────────────────────────────────
+[time]
+disabled = true
