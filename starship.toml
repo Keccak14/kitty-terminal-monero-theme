@@ -1,63 +1,29 @@
-# ─────────────────────────────────────────────────────────────
-#  Starship Prompt — Monero Theme
-#  Parent dirs: grey bg, black text
-#  Current dir: orange bg, black text
-#  Terminal text: muted orange #e05500
-# ─────────────────────────────────────────────────────────────
+format = "$directory$git_branch$git_status$cmd_duration\n[❯](bold fg:#ff6600) "
 
-format = "${custom.dir_parent}${custom.dir_current}$git_branch$git_status$cmd_duration\n[❯](bold fg:#e05500) "
+[directory]
+style = "bold bg:#ff6600 fg:#000000"
+format = "[ $path ]($style)"
+truncation_length = 5
+truncation_symbol = "…/"
+home_symbol = "~"
 
-# ── Parent path (grey block) ───────────────────────────────────
-[custom.dir_parent]
-command = '''
-p="${PWD/#$HOME/~}"
-if [ "$p" != "~" ]; then
-  parent=$(echo "$p" | sed 's|/[^/]*$||' | sed 's|/| > |g')
-  echo "$parent >"
-fi
-'''
-style = "bold bg:#4C4C4C fg:#000000"
-format = "[ $output ]($style)"
-when = '[ "${PWD/#$HOME/~}" != "~" ]'
-shell = ["bash", "-c"]
+[directory.substitutions]
+"/" = " > "
 
-# ── Current dir (orange block) ────────────────────────────────
-[custom.dir_current]
-command = '''
-p="${PWD/#$HOME/~}"
-if [ "$p" = "~" ]; then
-  echo "~"
-else
-  basename "$p"
-fi
-'''
-style = "bold bg:#e05500 fg:#000000"
-format = "[ $output ]($style)"
-when = "true"
-shell = ["bash", "-c"]
-
-# ── Git branch ────────────────────────────────────────────────
 [git_branch]
 style = "fg:#4C4C4C bold"
 symbol = ""
 format = "[ on $branch]($style)"
 
-# ── Git status ────────────────────────────────────────────────
 [git_status]
-style = "fg:#e05500 bold"
+style = "fg:#ff6600 bold"
 format = '([$all_status$ahead_behind]($style))'
 
-# ── Character (disabled — ❯ is in format) ────────────────────
 [character]
 success_symbol = ""
 error_symbol = "[❯](bold red)"
 vimcmd_symbol = ""
 
-# ── Directory (disabled — using custom modules above) ─────────
-[directory]
-format = ""
-
-# ── Command duration ──────────────────────────────────────────
 [cmd_duration]
 style = "fg:#4C4C4C bold"
 format = " [took $duration]($style)"
