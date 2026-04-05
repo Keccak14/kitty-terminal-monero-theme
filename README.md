@@ -9,6 +9,7 @@ A custom [kitty](https://sw.kovidgoyal.net/kitty/) terminal theme built around t
 - **Startup animation** — orange character rain cascades down and locks into the Monero ASCII logo, followed by a flash-pulse settle effect
 - **Monero color palette** — `#ff6600` orange on pure black, used for cursor, borders, tabs, and foreground
 - **Watermark logo** — the Monero logo sits quietly in the bottom-right corner of every window
+- **Starship prompt** — matching orange/grey prompt, no special fonts required. Style: `~ > Downloads > ISO ❯`
 - **Powerline tab bar** — styled in Monero orange and dark grey
 - **Slight background opacity** — `0.95` transparency for a subtle desktop bleed-through
 
@@ -20,6 +21,7 @@ A custom [kitty](https://sw.kovidgoyal.net/kitty/) terminal theme built around t
 |---|---|
 | [kitty](https://sw.kovidgoyal.net/kitty/) | Any recent version |
 | `python3` | Used by the startup animation |
+| `curl` | Used to install Starship automatically |
 
 ---
 
@@ -32,9 +34,9 @@ chmod +x install.sh
 ./install.sh
 ```
 
-Then **restart kitty**. The animation plays automatically on every launch.
+Then **restart kitty** and open a new shell tab. The animation plays on launch and the prompt activates in any new shell.
 
-> **Note:** If you have an existing `kitty.conf`, the installer backs it up as `kitty.conf.bak.<timestamp>` before overwriting.
+> **Note:** If you have an existing `kitty.conf` or `starship.toml`, the installer backs them up with a timestamp before overwriting.
 
 ---
 
@@ -46,6 +48,7 @@ kitty-terminal-monero-theme/
 ├── kitty.conf              # Full kitty config with Monero theme
 ├── startup.session         # Kitty session: runs animation then drops to shell
 ├── monero_art.sh           # Bash/Python ASCII rain animation
+├── starship.toml           # Starship prompt config (Monero colors)
 └── padded-Monero-Logo.png  # Window watermark logo
 ```
 
@@ -62,6 +65,19 @@ kitty-terminal-monero-theme/
 
 ---
 
+## 💻 Prompt Style
+
+The Starship prompt uses no special fonts — just standard unicode:
+
+```
+~ > Downloads > ISO ❯
+~/projects/myrepo on main ❯
+```
+
+Works with **bash and zsh**. The installer auto-detects which shell(s) you have and patches the correct rc file.
+
+---
+
 ## 🔧 Manual Installation
 
 If you prefer not to use the installer, copy the files manually:
@@ -75,6 +91,13 @@ chmod +x "$KITTY_CFG/monero_art.sh"
 
 # Fix the logo path in kitty.conf
 sed -i "s|KITTY_CONFIG_DIR|$KITTY_CFG|g" "$KITTY_CFG/kitty.conf"
+
+# Install Starship
+curl -sS https://starship.rs/install.sh | sh
+cp starship.toml "$HOME/.config/starship.toml"
+
+# Add to your ~/.bashrc or ~/.zshrc
+echo 'eval "$(starship init bash)"' >> ~/.bashrc
 ```
 
 ---
@@ -83,9 +106,9 @@ sed -i "s|KITTY_CONFIG_DIR|$KITTY_CFG|g" "$KITTY_CFG/kitty.conf"
 
 `monero_art.sh` is a self-contained Bash/Python script with three phases:
 
-1. **Rain phase** — randomized orange characters fall in columns across the full terminal height (55 ticks)
+1. **Rain phase** — randomized orange characters fall in columns across the full terminal height
 2. **Resolve phase** — columns lock into place column-by-column, revealing the Monero ASCII art underneath
-3. **Pulse phase** — the logo flashes between warm white and orange 3 times before settling into the final orange render
+3. **Pulse phase** — the logo flashes between warm white and orange 3 times before settling
 
 After the animation completes, your interactive shell starts normally.
 
