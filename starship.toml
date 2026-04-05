@@ -1,59 +1,44 @@
 # ─────────────────────────────────────────────────────────────
 #  Starship Prompt — Monero Theme
-#  Colors: #ff6600 orange, #4C4C4C grey, #000000 black
+#  Style: ~ > Downloads > ISO ❯
 # ─────────────────────────────────────────────────────────────
 
-format = """
-[█](fg:#ff6600)\
-[ $directory](bg:#ff6600 fg:#000000 bold)\
-[█](fg:#ff6600 bg:#4C4C4C)\
-[ $git_branch$git_status](bg:#4C4C4C fg:#ff6600)\
-[█ ](fg:#4C4C4C)\
-$all"""
+format = "$directory$git_branch$git_status$cmd_duration\n❯ "
 
 # ── Directory ─────────────────────────────────────────────────
 [directory]
-style = "bg:#ff6600 fg:#000000 bold"
-truncation_length = 4
-truncate_to_repo = true
+style = "bold fg:#ff6600"
+format = "[$path ]($style)"
+truncation_length = 5
+truncation_symbol = "…> "
+home_symbol = "~"
+use_logical_path = true
+
+[directory.substitutions]
+"/" = " > "
 
 # ── Git branch ────────────────────────────────────────────────
 [git_branch]
-style = "bg:#4C4C4C fg:#ff6600"
-symbol = " "
-format = "[$symbol$branch]($style)"
+style = "fg:#4C4C4C"
+symbol = ""
+format = "[on $branch]($style)"
 
 # ── Git status ────────────────────────────────────────────────
 [git_status]
-style = "bg:#4C4C4C fg:#ff6600"
-format = '([ $all_status$ahead_behind]($style))'
+style = "fg:#ff6600"
+format = '([$all_status$ahead_behind]($style))'
 
-# ── Character (prompt symbol) ─────────────────────────────────
+# ── Character (the ❯ is in format above, disable this) ────────
 [character]
-success_symbol = "[❯](bold fg:#ff6600)"
-error_symbol   = "[❯](bold red)"
+success_symbol = ""
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = ""
 
 # ── Command duration ──────────────────────────────────────────
 [cmd_duration]
 style = "fg:#4C4C4C"
-format = "[ $duration]($style)"
+format = "[took $duration]($style)"
 min_time = 2_000
 
-# ── Python ────────────────────────────────────────────────────
-[python]
-style = "fg:#ff6600"
-format = '[ $version]($style)'
-
-# ── Node ──────────────────────────────────────────────────────
-[nodejs]
-style = "fg:#ff6600"
-format = '[ $version]($style)'
-
-# ── Rust ──────────────────────────────────────────────────────
-[rust]
-style = "fg:#ff6600"
-format = '[ $version]($style)'
-
-# ── Time ──────────────────────────────────────────────────────
 [time]
 disabled = true
