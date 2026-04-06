@@ -2,7 +2,7 @@ format = "$directory$git_branch$git_status$cmd_duration\n[❯](bold fg:#ff6600) 
 
 [directory]
 style = "bold bg:#ff6600 fg:#000000"
-format = "[ $path ]($style)"
+format = "[ $path ](bold bg:#ff6600 fg:#000000)[](fg:#ff6600 bg:black)"
 truncation_length = 5
 truncation_symbol = "…/"
 home_symbol = "~"
@@ -11,12 +11,12 @@ home_symbol = "~"
 "/" = " > "
 
 [git_branch]
-style = "fg:#4C4C4C bold"
-symbol = ""
+style = "fg:#ff6600"
+symbol = " "
 format = "[ on $branch]($style)"
 
 [git_status]
-style = "fg:#ff6600 bold"
+style = "fg:#ff6600"
 format = '([$all_status$ahead_behind]($style))'
 
 [character]
