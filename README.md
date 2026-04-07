@@ -9,7 +9,8 @@ A custom [kitty](https://sw.kovidgoyal.net/kitty/) terminal theme built around t
 - **Startup animation** — orange character rain cascades down and locks into the Monero ASCII logo, followed by a flash-pulse settle effect
 - **Monero color palette** — `#ff6600` orange on pure black, used for cursor, borders, tabs, and foreground
 - **Watermark logo** — the Monero logo sits quietly in the bottom-right corner of every window
-- **Starship prompt** — matching orange/grey prompt, no special fonts required. Style: `~ > Downloads > ISO ❯`
+- **Starship prompt** — powerline-style CWD block matching the tab bar. Style: `[ ~ > Downloads > ISO ] ❯`
+- **JetBrainsMono Nerd Font** — installed automatically, enables powerline arrows in the prompt and tab bar
 - **Powerline tab bar** — styled in Monero orange and dark grey
 - **Slight background opacity** — `0.95` transparency for a subtle desktop bleed-through
 
@@ -21,7 +22,8 @@ A custom [kitty](https://sw.kovidgoyal.net/kitty/) terminal theme built around t
 |---|---|
 | [kitty](https://sw.kovidgoyal.net/kitty/) | Any recent version |
 | `python3` | Used by the startup animation |
-| `curl` | Used to install Starship automatically |
+| `curl` | Used to install Starship and JetBrainsMono Nerd Font automatically |
+| `unzip` | Used to extract the font archive |
 
 ---
 
@@ -34,7 +36,7 @@ chmod +x install.sh
 ./install.sh
 ```
 
-Then **restart kitty** and open a new shell tab. The animation plays on launch and the prompt activates in any new shell.
+Then **fully restart kitty** (quit and reopen) and open a new shell tab. The animation plays on launch and the Starship prompt activates in any new shell.
 
 > **Note:** If you have an existing `kitty.conf` or `starship.toml`, the installer backs them up with a timestamp before overwriting.
 
@@ -67,11 +69,11 @@ kitty-terminal-monero-theme/
 
 ## 💻 Prompt Style
 
-The Starship prompt uses no special fonts — just standard unicode:
+Powerline-style prompt using JetBrainsMono Nerd Font:
 
 ```
-~ > Downloads > ISO ❯
-~/projects/myrepo on main ❯
+[ ~ > Downloads > ISO ] ❯
+[ ~/projects/myrepo ] on main ❯
 ```
 
 Works with **bash and zsh**. The installer auto-detects which shell(s) you have and patches the correct rc file.
@@ -91,6 +93,11 @@ chmod +x "$KITTY_CFG/monero_art.sh"
 
 # Fix the logo path in kitty.conf
 sed -i "s|KITTY_CONFIG_DIR|$KITTY_CFG|g" "$KITTY_CFG/kitty.conf"
+
+# Install JetBrainsMono Nerd Font
+curl -sL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip -o /tmp/JetBrainsMono.zip
+unzip -q /tmp/JetBrainsMono.zip "*.ttf" -d ~/.local/share/fonts
+fc-cache -f ~/.local/share/fonts
 
 # Install Starship
 curl -sS https://starship.rs/install.sh | sh

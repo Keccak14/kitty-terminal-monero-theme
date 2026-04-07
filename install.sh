@@ -43,6 +43,28 @@ if ! command -v python3 &>/dev/null; then
 fi
 ok "python3 found"
 
+# ── Install JetBrainsMono Nerd Font ───────────────────────────
+header "Installing JetBrainsMono Nerd Font"
+
+FONT_DIR="$HOME/.local/share/fonts"
+
+if fc-list | grep -qi "JetBrainsMono Nerd Font"; then
+  ok "JetBrainsMono Nerd Font already installed"
+else
+  if command -v curl &>/dev/null; then
+    mkdir -p "$FONT_DIR"
+    FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip"
+    echo -e "  Downloading JetBrainsMono Nerd Font..."
+    curl -sL "$FONT_URL" -o /tmp/JetBrainsMono.zip
+    unzip -q -o /tmp/JetBrainsMono.zip "*.ttf" -d "$FONT_DIR"
+    rm /tmp/JetBrainsMono.zip
+    fc-cache -f "$FONT_DIR"
+    ok "JetBrainsMono Nerd Font installed"
+  else
+    warn "curl not found — skipping font install. Download manually from https://www.nerdfonts.com"
+  fi
+fi
+
 # ── Backup existing kitty config ───────────────────────────────
 header "Backing up existing kitty config"
 
@@ -99,6 +121,13 @@ if [ -f "$HOME/.config/starship.toml" ]; then
 fi
 
 cp "$REPO_DIR/starship.toml" "$HOME/.config/starship.toml"
+
+# Fix powerline glyph (U+E0B0) which can get stripped in file transfers
+python3 -c "
+content = open('$HOME/.config/starship.toml').read()
+content = content.replace('[ \$path ](bold bg:#ff6600 fg:#000000)[](fg:#ff6600 bg:black)', '[ \$path ](bold bg:#ff6600 fg:#000000)[\ue0b0](fg:#ff6600 bg:black)')
+open('$HOME/.config/starship.toml', 'w').write(content)
+"
 ok "starship.toml installed"
 
 # ── Patch shell rc files ───────────────────────────────────────
