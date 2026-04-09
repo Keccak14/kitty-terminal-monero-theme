@@ -3,28 +3,25 @@ python3 << 'PYEOF'
 import sys, time, random, os
 
 ART_LINES = [
-"              ...''''''...              ",
-"          .;cooooooooooooooc;'.         ",
-"        ,oooooooooooooooooooool,.       ",
-"      .;oooooooooooooooooooooooo:.      ",
-"      ;oooooooooooooooooooooooooo:      ",
-"     looo. loooooooooooooooo .oool      ",
-"     loooo.  cooooooooooool   ooool     ",
-"     coooo.   :ooooooooooc    ooooc     ",
-"     .ooooo.   ,oooooooo:     ooooo.    ",
-"     ,ooooo.    'oooooo,      ooooo:    ",
-"     ;ooooo. .   .ooo'  .     oooooc    ",
-"     .ooooo. ,'.       .',    ooooo,    ",
-"      ooooo. ,,,'.   .',,,    ooooo     ",
-"             ,,,,,'. .',,,,,            ",
-"             ,,,,,,,..,,,,,,,           ",
-"             ,,,,,,,,,,,,,,,,.          ",
-"      .,,,,,,,,,,,,,,,,,,,,,,,,,,,'     ",
-"        .,,,,,,,,,,,,,,,,,,,,,,,,'      ",
-"           ',,,,,,,,,,,,,,,,,,,         ",
-"                ,,,,,,,,,,.             ",
-"                                        ",
-"          Maybe you need a Monero       ",
+"             oooooooooo             ",
+"        oooooooooooooooooooo        ",
+"     oooooooooooooooooooooooooo     ",
+"    oooooooooooooooooooooooooooo    ",
+"  oooooooooooooooooooooooooooooooo  ",
+" oooooo  oooooooooooooooooo  oooooo ",
+"ooooooo    oooooooooooooo    ooooooo",
+"ooooooo      oooooooooo      ooooooo",
+"ooooooo        oooooo        ooooooo",
+"ooooooo   oo     oo     oo   ooooooo",
+"oooooo    oooo        oooo    oooooo",
+" ooooo    ooooooo  ooooooo    ooooo ",
+"          oooooooooooooooo          ",
+"   oooooooooooooooooooooooooooooo   ",
+"    oooooooooooooooooooooooooooo    ",
+"       oooooooooooooooooooooo       ",
+"          oooooooooooooooo          ",
+"                                    ",
+"      Maybe you need Monero         ",
 ]
 
 ROWS = len(ART_LINES)
@@ -142,7 +139,6 @@ for _ in range(3):
     flush()
     time.sleep(0.08)
 
-# Final clean render
 write(CLEAR)
 for row in ART_LINES:
     write(ORANGE('') + row + RESET + "\n")
