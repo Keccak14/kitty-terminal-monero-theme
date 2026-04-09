@@ -43,6 +43,23 @@ if ! command -v python3 &>/dev/null; then
 fi
 ok "python3 found"
 
+if ! command -v curl &>/dev/null; then
+  echo -e "  curl not found — attempting to install..."
+  if command -v apt &>/dev/null; then
+    sudo apt install -y curl
+  elif command -v dnf &>/dev/null; then
+    sudo dnf install -y curl
+  elif command -v yum &>/dev/null; then
+    sudo yum install -y curl
+  elif command -v pacman &>/dev/null; then
+    sudo pacman -S --noconfirm curl
+  else
+    warn "Could not install curl automatically. Please install it manually and re-run."
+    exit 1
+  fi
+fi
+ok "curl found"
+
 # ── Install JetBrainsMono Nerd Font ───────────────────────────
 header "Installing JetBrainsMono Nerd Font"
 
@@ -94,6 +111,9 @@ ok "monero_art.sh installed (executable)"
 
 cp "$REPO_DIR/padded-Monero-Logo.png" "$KITTY_CFG/padded-Monero-Logo.png"
 ok "padded-Monero-Logo.png installed"
+
+cp "$REPO_DIR/moneroskullandboneslogo.gif" "$KITTY_CFG/moneroskullandboneslogo.gif"
+ok "moneroskullandboneslogo.gif installed"
 
 # ── Install Starship prompt ────────────────────────────────────
 header "Installing Starship prompt"

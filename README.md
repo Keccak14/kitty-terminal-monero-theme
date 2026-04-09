@@ -22,8 +22,10 @@ A custom [kitty](https://sw.kovidgoyal.net/kitty/) terminal theme built around t
 |---|---|
 | [kitty](https://sw.kovidgoyal.net/kitty/) | Any recent version |
 | `python3` | Used by the startup animation |
-| `curl` | Used to install Starship and JetBrainsMono Nerd Font automatically |
+| `curl` | Used to install Starship and JetBrainsMono Nerd Font — installed automatically if missing |
 | `unzip` | Used to extract the font archive |
+
+> **Note:** If `curl` is not found, the installer will attempt to install it automatically using your system package manager (`apt`, `dnf`, `yum`, or `pacman`). You may be prompted for your sudo password.
 
 ---
 

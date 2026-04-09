@@ -3,28 +3,28 @@ python3 << 'PYEOF'
 import sys, time, random, os
 
 ART_LINES = [
-"                   ...''''''...                   ",
-"               .;cooooooooooooooc;'.              ",
-"            ,cooooooooooooooooooooool,.           ",
-"         .;oooooooooooooooooooooooooooo:.         ",
-"        ;oooooooooooooooooooooooooooooooo:        ",
-"       looo. looooooooooooooooooooooo .oool       ",
-"      loooo.   cooooooooooooooooool    ooool      ",
-"     cooooo.     :ooooooooooooooc      oooool     ",
-"    .oooooo.       ,oooooooooo:        oooooo.    ",
-"    ,oooooo.         'oooooo,          oooooo:    ",
-"    ;oooooo.    .      .oo'      .     ooooooc    ",
-"    .oooooo.    ,'.            .',     oooooo,    ",
-"     oooooo.    ,,,'.        .',,,     oooooo     ",
-"                ,,,,,'.    .',,,,,                ",
-"                ,,,,,,,'..',,,,,,,                ",
-"                ,,,,,,,,,,,,,,,,,,.               ",
-"         .,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,'         ",
-"           .,,,,,,,,,,,,,,,,,,,,,,,,,,'           ",
-"              ',,,,,,,,,,,,,,,,,,,,,              ",
-"                   ,,,,,,,,,,,,.                  ",
-"                                                  ",
-"              Maybe you need a Monero               ",
+"              ...''''''...              ",
+"          .;cooooooooooooooc;'.         ",
+"        ,oooooooooooooooooooool,.       ",
+"      .;oooooooooooooooooooooooo:.      ",
+"      ;oooooooooooooooooooooooooo:      ",
+"     looo. loooooooooooooooo .oool      ",
+"     loooo.  cooooooooooool   ooool     ",
+"     coooo.   :ooooooooooc    ooooc     ",
+"     .ooooo.   ,oooooooo:     ooooo.   ",
+"     ,ooooo.    'oooooo,      ooooo:   ",
+"     ;ooooo. .   .ooo'  .     oooooc   ",
+"     .ooooo. ,'.       .',    ooooo,   ",
+"      ooooo. ,,,'.   .',,,    ooooo    ",
+"             ,,,,,'. .',,,,,           ",
+"             ,,,,,,,..,,,,,,,          ",
+"             ,,,,,,,,,,,,,,,,.         ",
+"      .,,,,,,,,,,,,,,,,,,,,,,,,,,,'    ",
+"        .,,,,,,,,,,,,,,,,,,,,,,,,'     ",
+"           ',,,,,,,,,,,,,,,,,,,        ",
+"                ,,,,,,,,,,.            ",
+"                                       ",
+"          Maybe you need a Monero      ",
 ]
 
 ROWS = len(ART_LINES)
@@ -73,20 +73,17 @@ for tick in range(55):
     out = [HOME]
     for r in range(ROWS):
         for c in range(COLS):
-            diff = r - pos[c]  # 0 = head, -1..-6 = trail
+            diff = r - pos[c]
             if 0 <= -diff < len(TRAIL_FNS):
                 out.append(TRAIL_FNS[-diff](rch()))
             else:
                 out.append(RESET + " ")
         out.append(RESET + "\n")
-
-    # Advance drops
     for c in range(COLS):
         pos[c] += spd[c]
         if pos[c] > ROWS + 6:
             pos[c] = -random.randint(0, 6)
             spd[c] = random.randint(1, 3)
-
     write("".join(out))
     flush()
     time.sleep(0.055)
@@ -105,20 +102,15 @@ active_cols = [c for c in range(COLS) if col_has_content(c)]
 
 while active_cols:
     out = [HOME]
-
     for c in active_cols[:]:
         p = pos[c]
-        # Lock everything above drop
         for r in range(min(p, ROWS)):
             locked[r][c] = True
-        # Advance
         pos[c] += spd[c]
         if pos[c] >= ROWS:
             for r in range(ROWS):
                 locked[r][c] = True
             active_cols.remove(c)
-
-    # Draw grid
     for r in range(ROWS):
         for c in range(COLS):
             ch = ART_LINES[r][c]
@@ -131,7 +123,6 @@ while active_cols:
             else:
                 out.append(RESET + " ")
         out.append(RESET + "\n")
-
     write("".join(out))
     flush()
     time.sleep(0.06)
@@ -145,7 +136,6 @@ for _ in range(3):
         write(rc(255, 220, 180, '') + row + RESET + "\n")
     flush()
     time.sleep(0.08)
-
     write(HOME)
     for row in ART_LINES:
         write(ORANGE('') + row + RESET + "\n")
