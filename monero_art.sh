@@ -159,9 +159,9 @@ for _ in range(3):
     for r, row in enumerate(ART_LINES):
         for c, ch in enumerate(row):
             if COLOR_MAP[r][c] == 'G':
-                write(rc(76, 76, 76, '') + ch)
+                write(rc(180, 180, 180, '') + ch)  # flash to light grey
             else:
-                write(rc(255, 220, 180, '') + ch)
+                write(rc(255, 220, 180, '') + ch)  # flash to warm white
         write(RESET + "\n")
     flush()
     time.sleep(0.08)
