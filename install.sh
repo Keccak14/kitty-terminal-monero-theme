@@ -46,7 +46,7 @@ ok "python3 found"
 if ! command -v curl &>/dev/null; then
   echo -e "  curl not found — attempting to install..."
   if command -v apt &>/dev/null; then
-    sudo apt install -y curl
+    sudo apt update && sudo apt install -y curl
   elif command -v dnf &>/dev/null; then
     sudo dnf install -y curl
   elif command -v yum &>/dev/null; then
