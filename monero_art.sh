@@ -66,7 +66,7 @@ ART_LINES = make_art(TEMPLATE)
 
 ROWS = len(ART_LINES)
 COLS = len(ART_LINES[0])
-RAIN_CHARS = "olo,.':;co|"
+RAIN_CHARS = "MONERO"
 
 def rc(r, g, b, ch):
     return f"\033[38;2;{r};{g};{b}m{ch}"
