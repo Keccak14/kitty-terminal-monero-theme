@@ -112,8 +112,6 @@ ok "monero_art.sh installed (executable)"
 cp "$REPO_DIR/padded-Monero-Logo.png" "$KITTY_CFG/padded-Monero-Logo.png"
 ok "padded-Monero-Logo.png installed"
 
-cp "$REPO_DIR/moneroskullandboneslogo.gif" "$KITTY_CFG/moneroskullandboneslogo.gif"
-ok "moneroskullandboneslogo.gif installed"
 
 # ── Install Starship prompt ────────────────────────────────────
 header "Installing Starship prompt"
