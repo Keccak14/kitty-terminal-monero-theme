@@ -2,7 +2,7 @@
 python3 << 'PYEOF'
 import sys, time, random, os
 
-ART_LINES = [
+TEMPLATE = [
 "             GGGGGGGGGG             ",
 "        GGGGGGGGGGGGGGGGGGGG        ",
 "     GGGGGGGGGGGGGGGGGGGGGGGGGG     ",
@@ -45,6 +45,24 @@ COLOR_MAP = [
 "                                    ",
 "       OOOOOOOOOOOOOOOOOOOOOO       ",
 ]
+
+LETTERS = "MONERO"
+
+def make_art(template):
+    art = []
+    for row in template:
+        li = 0
+        new_row = ""
+        for ch in row:
+            if ch == 'G':
+                new_row += LETTERS[li % 6]
+                li += 1
+            else:
+                new_row += ch
+        art.append(new_row)
+    return art
+
+ART_LINES = make_art(TEMPLATE)
 
 ROWS = len(ART_LINES)
 COLS = len(ART_LINES[0])
@@ -159,9 +177,9 @@ for _ in range(3):
     for r, row in enumerate(ART_LINES):
         for c, ch in enumerate(row):
             if COLOR_MAP[r][c] == 'G':
-                write(rc(180, 180, 180, '') + ch)  # flash to light grey
+                write(rc(180, 180, 180, '') + ch)
             else:
-                write(rc(255, 220, 180, '') + ch)  # flash to warm white
+                write(rc(255, 220, 180, '') + ch)
         write(RESET + "\n")
     flush()
     time.sleep(0.08)
