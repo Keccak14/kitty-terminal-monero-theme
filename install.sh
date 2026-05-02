@@ -122,7 +122,7 @@ if command -v starship &>/dev/null; then
   ok "Starship already installed: $(starship --version | head -1)"
 else
   if command -v curl &>/dev/null; then
-    curl -sS https://starship.rs/install.sh | sh -s -- --yes
+    curl -sS https://starship.rs/install.sh | sh -s -- -y
     ok "Starship installed"
   else
     warn "curl not found — skipping Starship. Install manually from https://starship.rs"
