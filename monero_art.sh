@@ -21,7 +21,7 @@ TEMPLATE = [
 "       GGGGGGGGGGGGGGGGGGGGGG       ",
 "          GGGGGGGGGGGGGGGG          ",
 "                                    ",
-"       Maybe you need Monero        ",
+"       Maybe you need a Monero        ",
 ]
 
 COLOR_MAP = [
