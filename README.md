@@ -4,6 +4,12 @@ A custom [kitty](https://sw.kovidgoyal.net/kitty/) terminal theme built around t
 
 ---
 
+## 📸 Preview
+
+![Kitty Monero Theme Preview](preview.png)
+
+---
+
 ## ✨ Features
 
 - **Startup animation** — orange character rain cascades down and locks into the Monero ASCII logo, followed by a flash-pulse settle effect
@@ -120,6 +126,20 @@ echo 'eval "$(starship init bash)"' >> ~/.bashrc
 3. **Pulse phase** — the logo flashes between warm white and orange 3 times before settling
 
 After the animation completes, your interactive shell starts normally.
+
+---
+
+## 🔄 Updating
+
+If you already have the theme installed and want to get the latest version:
+
+```bash
+cd ~/kitty-terminal-monero-theme
+git pull
+chmod +x install.sh && ./install.sh
+```
+
+The installer will back up your existing config before overwriting. Restart kitty after updating.
 
 ---
 
