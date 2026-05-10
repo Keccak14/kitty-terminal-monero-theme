@@ -1,25 +1,25 @@
 #!/bin/bash
 python3 << 'PYEOF'
-import sys, time, random, os
+import sys, time, random, tty, termios, select
 
-TEMPLATE = [
-"             GGGGGGGGGG             ",
-"        GGGGGGGGGGGGGGGGGGGG        ",
-"     GGGGGGGGGGGGGGGGGGGGGGGGGG     ",
-"    GGGGGGGGGGGGGGGGGGGGGGGGGGGG    ",
-"  GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG  ",
-" GGGGGG  GGGGGGGGGGGGGGGGGG  GGGGGG ",
-"GGGGGGG    GGGGGGGGGGGGGG    GGGGGGG",
-"GGGGGGG      GGGGGGGGGG      GGGGGGG",
-"GGGGGGG        GGGGGG        GGGGGGG",
-"GGGGGGG   GG     GG     GG   GGGGGGG",
-"GGGGGG    GGGG        GGGG    GGGGGG",
-" GGGGG    GGGGGGG  GGGGGGG    GGGGG ",
-"          GGGGGGGGGGGGGGGG          ",
-"   GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG   ",
-"    GGGGGGGGGGGGGGGGGGGGGGGGGGGG    ",
-"       GGGGGGGGGGGGGGGGGGGGGG       ",
-"          GGGGGGGGGGGGGGGG          ",
+ART_LINES = [
+"             MONEROMONE             ",
+"        MONEROMONEROMONEROMO        ",
+"     MONEROMONEROMONEROMONEROMO     ",
+"    MONEROMONEROMONEROMONEROMONE    ",
+"  MONEROMONEROMONEROMONEROMONEROMO  ",
+" MONERO  MONEROMONEROMONERO  MONERO ",
+"MONEROM    ONEROMONEROMON    EROMONE",
+"MONEROM      ONEROMONER      OMONERO",
+"MONEROM        ONEROM        ONEROMO",
+"MONEROM   ON     ER     OM   ONEROMO",
+"MONERO    MONE        ROMO    NEROMO",
+" MONER    OMONERO  MONEROM    ONERO ",
+"          MONEROMONEROMONE          ",
+"   MONEROMONEROMONEROMONEROMONERO   ",
+"    MONEROMONEROMONEROMONEROMONE    ",
+"       MONEROMONEROMONEROMONE       ",
+"          MONEROMONEROMONE          ",
 "                                    ",
 "      Maybe you need a Monero       ",
 ]
@@ -45,24 +45,6 @@ COLOR_MAP = [
 "                                    ",
 "      OOOOOOOOOOOOOOOOOOOOOOOO      ",
 ]
-
-LETTERS = "MONERO"
-
-def make_art(template):
-    art = []
-    for row in template:
-        li = 0
-        new_row = ""
-        for ch in row:
-            if ch == 'G':
-                new_row += LETTERS[li % 6]
-                li += 1
-            else:
-                new_row += ch
-        art.append(new_row)
-    return art
-
-ART_LINES = make_art(TEMPLATE)
 
 ROWS = len(ART_LINES)
 COLS = len(ART_LINES[0])
@@ -100,102 +82,125 @@ def write(s):
 def flush():
     sys.stdout.flush()
 
-write(HIDE_CUR)
-write(CLEAR)
-flush()
+def key_pressed():
+    if not has_tty:
+        return False
+    return select.select([tty_fd], [], [], 0)[0] != []
 
-# -------------------------------------------------------
-# Phase 1: Full screen orange rain
-# -------------------------------------------------------
-pos  = [random.randint(0, ROWS) for _ in range(COLS)]
-spd  = [random.randint(1, 3)    for _ in range(COLS)]
-TRAIL_FNS = [HEAD, TRAIL1, TRAIL2, TRAIL3, TRAIL4, TRAIL5, TRAIL6]
-
-for tick in range(55):
-    out = [HOME]
-    for r in range(ROWS):
-        for c in range(COLS):
-            diff = r - pos[c]
-            if 0 <= -diff < len(TRAIL_FNS):
-                out.append(TRAIL_FNS[-diff](rch()))
-            else:
-                out.append(RESET + " ")
-        out.append(RESET + "\n")
-    for c in range(COLS):
-        pos[c] += spd[c]
-        if pos[c] > ROWS + 6:
-            pos[c] = -random.randint(0, 6)
-            spd[c] = random.randint(1, 3)
-    write("".join(out))
-    flush()
-    time.sleep(0.055)
-
-# -------------------------------------------------------
-# Phase 2: Resolve into logo
-# -------------------------------------------------------
-locked = [[False] * COLS for _ in range(ROWS)]
-pos    = [random.randint(0, ROWS - 1) for _ in range(COLS)]
-spd    = [random.randint(1, 2)        for _ in range(COLS)]
-
-def col_has_content(c):
-    return any(ART_LINES[r][c] != ' ' for r in range(ROWS))
-
-active_cols = [c for c in range(COLS) if col_has_content(c)]
-
-while active_cols:
-    out = [HOME]
-    for c in active_cols[:]:
-        p = pos[c]
-        for r in range(min(p, ROWS)):
-            locked[r][c] = True
-        pos[c] += spd[c]
-        if pos[c] >= ROWS:
-            for r in range(ROWS):
-                locked[r][c] = True
-            active_cols.remove(c)
-    for r in range(ROWS):
-        for c in range(COLS):
-            ch = ART_LINES[r][c]
-            p  = pos[c]
-            diff = r - p
-            if locked[r][c]:
-                out.append(color_for(r, c)(ch))
-            elif 0 <= -diff < 4 and ch != ' ':
-                out.append(TRAIL1(rch()) if diff != 0 else HEAD(rch()))
-            else:
-                out.append(RESET + " ")
-        out.append(RESET + "\n")
-    write("".join(out))
-    flush()
-    time.sleep(0.06)
-
-# -------------------------------------------------------
-# Phase 3: Flash pulse then settle
-# -------------------------------------------------------
-for _ in range(3):
-    write(HOME)
-    for r, row in enumerate(ART_LINES):
-        for c, ch in enumerate(row):
-            if COLOR_MAP[r][c] == 'G':
-                write(rc(180, 180, 180, '') + ch)
-            else:
-                write(rc(255, 220, 180, '') + ch)
-        write(RESET + "\n")
-    flush()
-    time.sleep(0.08)
-    write(HOME)
+def final_render():
+    write(CLEAR)
     for r, row in enumerate(ART_LINES):
         for c, ch in enumerate(row):
             write(color_for(r, c)(ch))
         write(RESET + "\n")
+    write(SHOW_CUR)
     flush()
-    time.sleep(0.08)
 
-write(CLEAR)
-for r, row in enumerate(ART_LINES):
-    for c, ch in enumerate(row):
-        write(color_for(r, c)(ch))
-    write(RESET + "\n")
-write(SHOW_CUR)
-flush()
+try:
+    tty_fd = open('/dev/tty', 'rb', buffering=0)
+    old_settings = termios.tcgetattr(tty_fd)
+    tty.setcbreak(tty_fd)
+    has_tty = True
+except Exception:
+    tty_fd = None
+    has_tty = False
+
+try:
+    write(HIDE_CUR)
+    write(CLEAR)
+    flush()
+
+    # ── Phase 1: Rain ─────────────────────────────────────────
+    pos  = [random.randint(0, ROWS) for _ in range(COLS)]
+    spd  = [random.randint(1, 3)    for _ in range(COLS)]
+    TRAIL_FNS = [HEAD, TRAIL1, TRAIL2, TRAIL3, TRAIL4, TRAIL5, TRAIL6]
+
+    for tick in range(55):
+        if key_pressed():
+            raise StopIteration
+        out = [HOME]
+        for r in range(ROWS):
+            for c in range(COLS):
+                diff = r - pos[c]
+                if 0 <= -diff < len(TRAIL_FNS):
+                    out.append(TRAIL_FNS[-diff](rch()))
+                else:
+                    out.append(RESET + " ")
+            out.append(RESET + "\n")
+        for c in range(COLS):
+            pos[c] += spd[c]
+            if pos[c] > ROWS + 6:
+                pos[c] = -random.randint(0, 6)
+                spd[c] = random.randint(1, 3)
+        write("".join(out))
+        flush()
+        time.sleep(0.055)
+
+    # ── Phase 2: Resolve ──────────────────────────────────────
+    locked = [[False] * COLS for _ in range(ROWS)]
+    pos    = [random.randint(0, ROWS - 1) for _ in range(COLS)]
+    spd    = [random.randint(1, 2)        for _ in range(COLS)]
+
+    def col_has_content(c):
+        return any(ART_LINES[r][c] != ' ' for r in range(ROWS))
+
+    active_cols = [c for c in range(COLS) if col_has_content(c)]
+
+    while active_cols:
+        if key_pressed():
+            raise StopIteration
+        out = [HOME]
+        for c in active_cols[:]:
+            p = pos[c]
+            for r in range(min(p, ROWS)):
+                locked[r][c] = True
+            pos[c] += spd[c]
+            if pos[c] >= ROWS:
+                for r in range(ROWS):
+                    locked[r][c] = True
+                active_cols.remove(c)
+        for r in range(ROWS):
+            for c in range(COLS):
+                ch = ART_LINES[r][c]
+                p  = pos[c]
+                diff = r - p
+                if locked[r][c]:
+                    out.append(color_for(r, c)(ch))
+                elif 0 <= -diff < 4 and ch != ' ':
+                    out.append(TRAIL1(rch()) if diff != 0 else HEAD(rch()))
+                else:
+                    out.append(RESET + " ")
+            out.append(RESET + "\n")
+        write("".join(out))
+        flush()
+        time.sleep(0.06)
+
+    # ── Phase 3: Flash pulse ──────────────────────────────────
+    for _ in range(3):
+        if key_pressed():
+            raise StopIteration
+        write(HOME)
+        for r, row in enumerate(ART_LINES):
+            for c, ch in enumerate(row):
+                write((rc(180, 180, 180, '') if COLOR_MAP[r][c] == 'G' else rc(255, 220, 180, '')) + ch)
+            write(RESET + "\n")
+        flush()
+        time.sleep(0.08)
+        if key_pressed():
+            raise StopIteration
+        write(HOME)
+        for r, row in enumerate(ART_LINES):
+            for c, ch in enumerate(row):
+                write(color_for(r, c)(ch))
+            write(RESET + "\n")
+        flush()
+        time.sleep(0.08)
+
+except StopIteration:
+    pass
+finally:
+    if has_tty:
+        termios.tcsetattr(tty_fd, termios.TCSADRAIN, old_settings)
+        tty_fd.close()
+    final_render()
 PYEOF
